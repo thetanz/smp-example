@@ -8,7 +8,7 @@
             "server": "http://bccommon",
             "serverInstance": "BC",
             "authentication": "UserPassword",
-            "breakOnError": false,
+            "breakOnError": true,
             "enableLongRunningSqlStatements": true,
             "enableSqlInformationDebugger": true,
             "tenant": "default"
