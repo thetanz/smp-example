@@ -1,0 +1,7 @@
+{
+    "CRS.ObjectNameSuffix": "",
+    "al.codeAnalyzers": [
+        "${PerTenantExtensionCop}",
+        "${CodeCop}"
+    ]
+}

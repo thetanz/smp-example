@@ -1,14 +1,16 @@
 codeunit 50002 "SubscriptionMgtProxy"
 {
+    var
+        SubscriptionMgt: Codeunit SubscriptionMgt_SM_TSL;
+
     [NonDebuggable]
     internal procedure AddProduct()
     var
-        SubscriptionMgt: Codeunit SubscriptionMgt_SM_TSL;
         Info: ModuleInfo;
         TryAddProductErr: Label 'Failed to register product.';
     begin
         if NavApp.GetCurrentModuleInfo(Info) then
-            // https://docs.365extensions.com/docs/smp/docs/References/SubscriptionMgt.md#tryaddproduct-method
+            // https://docs.365extensions.com/docs/SM/docs/References/SubscriptionMgt#tryaddproduct-method
             if SubscriptionMgt.TryAddProduct(
                 GetSecret('StripeSecretKey'),
                 GetSecret('StripePublishableKey'),
@@ -17,6 +19,29 @@ codeunit 50002 "SubscriptionMgtProxy"
             then
                 exit;
         LogError('SubscriptionMgtProxy-0001', TryAddProductErr)
+    end;
+
+    [NonDebuggable]
+    internal procedure IsActive() Result: Boolean
+    begin
+        // https://docs.365extensions.com/docs/SM/docs/References/SubscriptionMgt#isactive-method
+        Result := SubscriptionMgt.IsActive(
+            GetSecret('StripeSecretKey'),
+            GetSecret('StripeProductID'));
+        if not Result then
+            // https://docs.365extensions.com/docs/SM/docs/References/SubscriptionMgt#shownotification-method
+            SubscriptionMgt.ShowNotification(
+                GetSecret('StripeSecretKey'),
+                GetSecret('StripeProductID'));
+    end;
+
+    [NonDebuggable]
+    internal procedure IsTrialing(): Boolean
+    begin
+        // https://docs.365extensions.com/docs/SM/docs/References/SubscriptionMgt#istrialing-method
+        exit(SubscriptionMgt.IsTrialing(
+            GetSecret('StripeSecretKey'),
+            GetSecret('SecondStripeProductID')))
     end;
 
     [NonDebuggable]
