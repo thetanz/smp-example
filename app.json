@@ -22,6 +22,7 @@
 
   ],
   "platform": "15.0.0.0",
+  "application": "15.0.0.0",
   "idRanges": [
     {
       "from": 50000,
